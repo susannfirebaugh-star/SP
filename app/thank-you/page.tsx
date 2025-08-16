@@ -22,7 +22,20 @@ export default function ThankYouPage() {
         id="conversion-event"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: `gtag('event', 'conversion', {'send_to': 'AW-625061154/_1i9CITkj4QbEKLahqoC'});`,
+          __html: `
+            function fireConversionEvent() {
+              if (typeof gtag !== 'undefined') {
+                gtag('event', 'conversion', {'send_to': 'AW-625061154/_1i9CITkj4QbEKLahqoC'});
+                console.log('[v0] Conversion event fired successfully');
+              } else {
+                console.log('[v0] gtag not available, retrying in 500ms');
+                setTimeout(fireConversionEvent, 500);
+              }
+            }
+            
+            // Fire the conversion event
+            fireConversionEvent();
+          `,
         }}
       />
 
